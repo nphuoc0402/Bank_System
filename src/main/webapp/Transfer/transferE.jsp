@@ -54,7 +54,8 @@
         <div class="form-row">
             <div class="col-md-4 mb-3">
                 <label for="validationCustom01">ID Sender</label>
-                <input  type="text" class="form-control"  name="idS" id="validationCustom01" value="<c:out value='${customer.getId()}'/>"  >
+                <input  type="hidden" class="form-control"  name="idS" id="validationCustom01" value="<c:out value='${customer.getId()}'/>"  >
+                <input disabled type="text" class="form-control"  name="idSd" id="validationCustom02" value="<c:out value='${customer.getId()}'/>"  >
             </div>
             <div class="col-md-4 mb-3">
                 <label >Customer Name</label>
@@ -85,7 +86,8 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label >Fee Percent</label>
-                <input  type="text" id="feepercent" name="feepercent" class="form-control" value="<c:out value='${feePercent}'/>" >
+                <input  type="hidden" id="feepercent" name="feepercent" class="form-control" value="<c:out value='${feePercent}'/>" >
+                <input disabled type="text" id="feepercent1" name="feepercent1" class="form-control" value="<c:out value='${feePercent}'/>" >
 
             </div>
             <div class="col-md-3 mb-3">
@@ -105,60 +107,61 @@
             <span class="message error">${requestScope["error"]}</span>
         </c:if>
     </div>
-    <script>
-        function myFunction() {
-            var x = document.getElementById("amount").value;
-            var y = document.getElementById("feepercent").value;
-            document.getElementById("Input").value = (x * y)/100;
-        }
-        $('.alert-success').delay(4 * 1000).slideUp(500, function () {
-            $('this').alert('close');
-        });
 
-        $('.alert-danger').delay(4 * 1000).slideUp(500, function () {
-            $('this').alert('close');
-        });
-    </script>
-    <script>
-        $(function() {
-            $(".needs-validation").validate({
-                rules: {
-                    onfocusout: false,
-                    onkeyup: false,
-                    onclick: false,
-                    idS: {
-                        required : true
-                    },
-                    idR: {
-                        required: true
-                    },
-                    amount: {
-                        required: true,
-                    },
-
-                },
-                messages: {
-                    idS: {
-                        required: "Please enter your name",
-                        number: "ID Sender is required"
-                    },
-                    idR:{
-                        required: "Please provide a phone",
-                        number: "ID Receiver is required"
-                    },
-                    amount: {
-                        required: "Please provide a email",
-                        number: "amount is required"
-
-                    },
-
-                },
-                submitHandler: function(form) {
-                    form.submit();
-                }
-            });
-        });
-    </script>
 </div>
+<script>
+    function myFunction() {
+        var x = document.getElementById("amount").value;
+        var y = document.getElementById("feepercent").value;
+        document.getElementById("Input").value = (x * y)/100;
+    }
+    $('.alert-success').delay(4 * 1000).slideUp(500, function () {
+        $('this').alert('close');
+    });
+
+    $('.alert-danger').delay(4 * 1000).slideUp(500, function () {
+        $('this').alert('close');
+    });
+</script>
+<script>
+    $(function() {
+        $(".needs-validation").validate({
+            rules: {
+                onfocusout: false,
+                onkeyup: false,
+                onclick: false,
+                idS: {
+                    required : true
+                },
+                idR: {
+                    required: true
+                },
+                amount: {
+                    required: true,
+                },
+
+            },
+            messages: {
+                idS: {
+                    required: "Please enter your name",
+                    number: "ID Sender is required"
+                },
+                idR:{
+                    required: "Please provide a phone",
+                    number: "ID Receiver is required"
+                },
+                amount: {
+                    required: "Please provide a email",
+                    number: "amount is required"
+
+                },
+
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

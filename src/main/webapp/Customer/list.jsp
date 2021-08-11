@@ -10,6 +10,7 @@
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
+
     <style>
         label.error{
             color: red;
@@ -21,6 +22,7 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/resource/js/jquery.validate.min.js"></script>
 
 </head>
@@ -31,7 +33,8 @@
 <div class="container">
     <div align="center">
         <caption><h2>List of Customers</h2></caption>
-        <h2><a href="/ManagerCustomer">Manager Customer</a></h2>
+<%--        <h2><a href="/ManagerCustomer">Manager Customer</a></h2>--%>
+        <h2><a class="btn btn-warning" href="/ManagerCustomer?action=revenue" title="Revenue">Revenue</a></h2>
         <form class="needs-validation row"  method="post">
             <div class=" form-group col-3">
                 <label for="validationCustom01">User Name: </label>
@@ -68,6 +71,8 @@
             <th scope="col">Phone</th>
             <th scope="col">Email</th>
             <th scope="col">Salary</th>
+            <th scope="col">Deposit</th>
+            <th scope="col">Withdraw</th>
             <th scope="col">Actions</th>
             </thead>
             </thead>
@@ -80,14 +85,20 @@
                     <td><c:out value="${user.getEmail()}"/></td>
                     <td><fmt:formatNumber value="${user.getSalary()}" type="currency"
                                           currencySymbol="$"></fmt:formatNumber></td>
+                    <td><a class="btn btn-warning" href="/ManagerCustomer?action=deposit&id=${user.id}" title="Edit">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a></td>
+                    <td><a class="btn btn-warning" href="/ManagerCustomer?action=withdraw&id=${user.id}" title="Edit">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </a></td>
                     <td>
                         <a class="btn btn-warning" href="/banking_system?action=edit&id=${user.id}" title="Edit"><i
                                 class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                         <a class="btn btn-success" href="/banking_system?action=transfer&id=${user.id}"
                            title="Transfer"><i
                                 class="fa fa-exchange" aria-hidden="true"></i></a>
-                        <a class="btn btn-danger" href="/banking_system?action=delete&id=${user.id}" title="Delete"><i
-                                class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        <a class="btn btn-danger" id="deleteAll" onclick="deleteCustomer(${user.id})"  title="Delete">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </td>
                 </tr>
             </c:forEach>
@@ -116,6 +127,24 @@
     $('.alert-danger').delay(4 * 1000).slideUp(500, function () {
         $('this').alert('close');
     });
+</script>
+<script>
+    function deleteCustomer(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                window.location.href = "/banking_system?action=delete&id=" + id;
+            }
+        })
+    }
 </script>
 </body>
 </html>

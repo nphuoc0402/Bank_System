@@ -33,7 +33,7 @@
 <div align="center">
     <caption><h2>Form Deposit Customers</h2></caption>
     <h2><a href="/ManagerCustomer">Manager Customer</a></h2>
-    <form class="form-group" novalidate method="post">
+    <form class="form-group needs-validation"  method="post">
         <div class="row">
             <div class="col-6">
                 <label >User Name: </label>
@@ -62,20 +62,45 @@
             <a href="/banking_system">Back to customer list</a>
         </div>
     </form>
-</div>
-<div class="message">
-    <c:if test='${requestScope["success"] != null}'>
-        <div class="alert alert-success" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
-                ${requestScope["success"]}
-        </div>
+    <div class="message">
+        <c:if test='${requestScope["success"] != null}'>
+            <div class="alert alert-success" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                    ${requestScope["success"]}
+            </div>
 
-    </c:if>
-    <c:if test='${requestScope["error"] != null}'>
-        <div class="alert alert-danger" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
-                ${requestScope["error"]}
-        </div>
-    </c:if>
+        </c:if>
+        <c:if test='${requestScope["error"] != null}'>
+            <div class="alert alert-danger" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                    ${requestScope["error"]}
+            </div>
+        </c:if>
+    </div>
 </div>
+<script>
+    $(function () {
+        $(".needs-validation").validate({
+            rules: {
+                onfocusout: false,
+                onkeyup: false,
+                onclick: false,
+                balance: {
+                    required: true,
+                    number: true
+                },
+            },
+            messages: {
+                balance: {
+                    required: "Please enter your Balance",
+                    number: "Balance required number"
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>
+
 <script>
     $('.alert-success').delay(4 * 1000).slideUp(500, function () {
         $('this').alert('close');

@@ -99,15 +99,19 @@
 
         <button class="btn btn-primary" type="submit">Transfer Transaction</button>
     </form>
-    <div>
-        <c:if test='${requestScope["success"] != null}'>
-            <span class="message success">${requestScope["success"]}</span>
-        </c:if>
-        <c:if test='${requestScope["error"] != null}'>
-            <span class="message error">${requestScope["error"]}</span>
-        </c:if>
-    </div>
+    <div class="message">
+    <c:if test='${requestScope["success"] != null}'>
+        <div class="alert alert-success" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                ${requestScope["success"]}
+        </div>
 
+    </c:if>
+    <c:if test='${requestScope["error"] != null}'>
+        <div class="alert alert-danger" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                ${requestScope["error"]}
+        </div>
+    </c:if>
+</div>
 </div>
 <script>
     function myFunction() {

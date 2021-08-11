@@ -68,6 +68,22 @@ public class TransferDAO implements ITransferDAO {
         return transferList;
     }
 
+    public  int selectTotal() throws SQLException{
+        int total = 0;
+        String Select_Total = "SELECT SUM(total_amount) AS Total FROM transfers;";
+        try{
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement(Select_Total);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                total = rs.getInt("Total");
+            }
+        }catch (SQLException e){
+            printSQLException(e);
+        }
+        return total;
+    }
+
     @Override
     public boolean update(Transfer transfer) throws SQLException {
         boolean update = false;

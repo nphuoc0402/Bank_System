@@ -79,6 +79,8 @@ public class ManageCustomerServlet extends HttpServlet {
     public void listRevenue(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         List<Transfer> transferList = transferDAO.selectAllTransfer();
         List<Customer> customers = customerDAO.selectAllCustomer();
+        int total = transferDAO.selectTotal();
+        request.setAttribute("total",total);
         request.setAttribute("transfers",transferList);
         request.setAttribute("customers",customers);
         RequestDispatcher dis = request.getRequestDispatcher("manager/revenue.jsp");
@@ -116,12 +118,13 @@ public class ManageCustomerServlet extends HttpServlet {
         if (balance == "") {
             request.setAttribute("success", null);
             request.setAttribute("error", "Balance is required");
-            showCustomer(request, response);
+            showDepositForm(request, response);
         } else {
             if (!CheckTools.isNumeric(balance)) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
-                showCustomer(request, response);
+                showDepositForm(request, response);
+
             } else {
                 if (editCustomer == null) {
                     dis = request.getRequestDispatcher("Customer/error-404.jsp");
@@ -131,13 +134,14 @@ public class ManageCustomerServlet extends HttpServlet {
                         request.setAttribute("success", null);
                         request.setAttribute("error", "Salary require greater than 0 and less than 100000");
                         showDepositForm(request, response);
+
                     }else {
                         editCustomer.setId(id);
                         editCustomer.setSalary(salary);
                         customerDAO.DepositBalance(editCustomer);
                         request.setAttribute("success", "Customer was update salary success");
                         request.setAttribute("error", null);
-                        showCustomer(request, response);
+                        showDepositForm(request, response);
                     }
                 }
 
@@ -153,12 +157,13 @@ public class ManageCustomerServlet extends HttpServlet {
         if (balance == "") {
             request.setAttribute("success", null);
             request.setAttribute("error", "Balance is required");
-            showCustomer(request, response);
+            showWithdrawForm(request, response);
         } else {
             if (!CheckTools.isNumeric(balance)) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
-                showCustomer(request, response);
+                showWithdrawForm(request, response);
+
             } else {
                 if (editCustomer == null) {
                     dis = request.getRequestDispatcher("Customer/error-404.jsp");
@@ -167,14 +172,14 @@ public class ManageCustomerServlet extends HttpServlet {
                     if(salary <=0 || salary >99999 || salary < editCustomer.getSalary()){
                         request.setAttribute("success", null);
                         request.setAttribute("error", "Salary require greater than 0 and less than 100000 or Salary isn't enough to withdraw");
-                        showDepositForm(request, response);
+                        showWithdrawForm(request, response);
                     }else {
                         editCustomer.setId(id);
                         editCustomer.setSalary(salary);
                         customerDAO.WithdrawBalance(editCustomer);
                         request.setAttribute("success", "Customer was update salary success");
                         request.setAttribute("error", null);
-                        showCustomer(request, response);
+                        showWithdrawForm(request, response);
                     }
                 }
 

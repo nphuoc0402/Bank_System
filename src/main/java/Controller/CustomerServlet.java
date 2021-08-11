@@ -38,7 +38,6 @@ public class CustomerServlet extends HttpServlet {
                     updateCustomer(request, response);
                     break;
                 case "delete":
-                    deleteCustomer(request,response);
                     break;
                 case "transfer":
                     transferE(request,response);
@@ -67,7 +66,8 @@ public class CustomerServlet extends HttpServlet {
                     showEditForm(request, response);
                     break;
                 case "delete":
-                    showDeleteForm(request, response);
+//                    showDeleteForm(request, response);
+                    deleteCustomer(request,response);
                     break;
                 case "transfer":
                     showTransfer(request, response);
@@ -163,12 +163,12 @@ public class CustomerServlet extends HttpServlet {
         if (name == "" || email == "" || phone == "") {
             request.setAttribute("success", null);
             request.setAttribute("error", "All field is required");
-            showListCustomer(request, response);
+            showEditForm(request, response);
         } else {
             if (!CheckTools.isEmail(email) || CheckTools.isNumeric(phone)) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
-                showListCustomer(request, response);
+                showEditForm(request, response);
             } else {
                 if (editCustomer == null) {
                     dis = request.getRequestDispatcher("Customer/error-404.jsp");
@@ -178,9 +178,9 @@ public class CustomerServlet extends HttpServlet {
                     editCustomer.setEmail(email);
                     editCustomer.setPhone(phone);
                     customerDAO.isUpdateCustomer(editCustomer);
-                    request.setAttribute("success", "Customer information was created");
+                    request.setAttribute("success", "Customer was edit success!");
                     request.setAttribute("error", null);
-                    showListCustomer(request, response);
+                    showEditForm(request, response);
                 }
 
             }
@@ -210,7 +210,7 @@ public class CustomerServlet extends HttpServlet {
                 Customer customerS = customerDAO.selectCustomerById(ids);
                 Customer customerR = customerDAO.selectCustomerById(idR);
                 int total_fee = (amount*fee_percent)/100;
-                if (amount >= (customerS.getSalary()+total_fee) || amount <= 0 || customerR == null) {
+                if (amount >= (customerS.getSalary()+total_fee) || amount <= 0 || customerR == null || ids == idR) {
                     request.setAttribute("error", "Transfer isn't successful");
                     request.setAttribute("success", null);
                     showTransfer(request, response);
@@ -235,18 +235,33 @@ public class CustomerServlet extends HttpServlet {
 
     public void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
         int id = Integer.parseInt(request.getParameter("id"));
+        List<Transfer> transferList = transferDAO.selectAllTransfer();
         Customer customer = customerDAO.selectCustomerById(id);
         RequestDispatcher dis;
         if(customer == null){
             dis = request.getRequestDispatcher("error-404.jsp");
         }else{
-            customerDAO.isDeleteCustomer(id);
-            request.setAttribute("error",null);
-            request.setAttribute("success","Customer was deleted");
-            List<Customer> customerList = customerDAO.selectAllCustomer();
-            request.setAttribute("customers",customerList);
-//        response.sendRedirect("/customersManage");
-            showListCustomer(request,response);
+            boolean check = true;
+            for(Transfer transfer : transferList){
+                if(transfer.getIdReceiver() == id || transfer.getIdSender() == id){
+                    check = false;
+                    break;
+                }
+            }
+            if(check){
+                customerDAO.isDeleteCustomer(id);
+                List<Customer> customerList = customerDAO.selectAllCustomer();
+                request.setAttribute("customers",customerList);
+                response.sendRedirect("banking_system");
+                request.setAttribute("error",null);
+                request.setAttribute("success","Customer was deleted");
+            }else{
+                response.sendRedirect("banking_system");
+                request.setAttribute("error","Traded Customer cannot be deleted");
+                request.setAttribute("success",null);
+
+            }
+
         }
     }
 

@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="container">
-    <h2><a href="/ManagerCustomer">Manager Customer</a></h2>
+    <h2><a href="/banking_system">Manager Customer</a></h2>
     <table class="table table-striped">
         <thead class="thead-dark">
         <th scope="col">ID</th>
@@ -48,6 +48,7 @@
             </tr>
         </c:forEach>
     </table>
+    <p  style="float: right;font-weight: bold; margin-right: 170px ">Total:<c:out value="${total}"/></p>
 </div>
 </body>
 </html>

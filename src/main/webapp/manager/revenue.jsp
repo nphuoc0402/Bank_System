@@ -25,6 +25,7 @@
 </head>
 <body>
 <div class="container">
+    <h2><a href="/ManagerCustomer">Manager Customer</a></h2>
     <table class="table table-striped">
         <thead class="thead-dark">
         <th scope="col">ID</th>
@@ -38,14 +39,12 @@
 
         <c:forEach var="transfer" items="${transfers}">
             <tr>
-                <c:forEach var="customer" items="${customers}">
-                    <td><c:out value="${transfer.getId()}"/></td>
-                    <td><c:out value="${(customer.get(transfer.getIdSender()).getName())}"/></td>
-                    <td><c:out value="${(customer.get(transfer.setIdReceiver()).getName())}"/></td>
-                    <td><c:out value="${transfer.getAmount()}"/></td>
-                    <td><c:out value="${transfer.getTransaction_fee()}"/></td>
-                    <td><c:out value="${transfer.getTotal_amount()}"/></td>
-                </c:forEach>
+                <td><c:out value="${transfer.getId()}"/></td>
+                <td><c:out value="${customers.get(transfer.getIdSender()-1).getName()}"/></td>
+                <td><c:out value="${customers.get(transfer.getIdReceiver()-1).getName()}"/></td>
+                <td><c:out value="${transfer.getAmount()}"/></td>
+                <td><c:out value="${transfer.getTransaction_fee()}"/></td>
+                <td><c:out value="${transfer.getTotal_amount()}"/></td>
             </tr>
         </c:forEach>
     </table>

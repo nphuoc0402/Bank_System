@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransferDAO implements ITransferDAO {
@@ -39,7 +40,7 @@ public class TransferDAO implements ITransferDAO {
     @Override
     public List<Transfer> selectAllTransfer() {
         String Select_All_SQL = "SELECT id,idSender,idReceiver,amount,fee_percent,total_amount FROM transfers;";
-        List<Transfer> transferList = null;
+        List<Transfer> transferList = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Select_All_SQL);
             ResultSet rs = preparedStatement.executeQuery();
@@ -50,7 +51,8 @@ public class TransferDAO implements ITransferDAO {
                 int amount = rs.getInt("amount");
                 int fee_percent = rs.getInt("fee_percent");
                 int fee_amount = rs.getInt("total_amount");
-                transferList.add(new Transfer(id,idSender,idReceiver,amount,fee_percent,fee_amount)) ;
+                Transfer transfer = new Transfer(id,idSender,idReceiver,amount,fee_percent,fee_amount);
+                transferList.add(transfer) ;
             }
         }catch (SQLException e){
             printSQLException(e);

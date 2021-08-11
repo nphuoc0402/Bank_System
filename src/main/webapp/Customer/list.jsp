@@ -26,29 +26,29 @@
         <caption><h2>List of Customers</h2></caption>
         <h2><a href="/ManagerCustomer">Manager Customer</a></h2>
         <form class="needs-validation row"  method="post">
-            <div class="col-3">
+            <div class=" form-group col-3">
                 <label for="validationCustom01">User Name: </label>
                 <input type="text" name="name" size="45" class="form-control" id="validationCustom01" required>
             </div>
-            <div class="col-3">
+            <div class="form-group col-3">
                 <label>Phone:</label>
                 <input type="text" name="phone" id="phone" size="45" class="form-control" required>
             </div>
-            <div class="col-3">
+            <div class="form-group col-3">
                 <label>Email:</label>
                 <input type="text" name="email" id="email" size="45" class="form-control" required>
             </div>
-            <div class="col-3">
+            <div class="form-group col-3">
                 <label>Salary:</label>
                 <input type="text" disabled name="salary" value="0" class="form-control" required>
             </div>
-            <div class="col-4">
+            <div class="form-group col-3">
                 <button  type="submit" class="btn btn-success">ADD NEW CUSTOMER</button>
             </div>
         </form>
     </div>
-    <div class="row justify-content-between">
-        <form class="form-inline col-4" method="post" action="/banking_system?action=search">
+    <div class="row justify-content-between text-right">
+        <form class="form-inline" method="post" action="/banking_system?action=search">
             <input type="text" class="form-control" name="search" placeholder="Searching ...">
             <button type="submit" class="btn btn-success mr-3">SEARCH</button>
         </form>

@@ -138,7 +138,7 @@ public class CustomerServlet extends HttpServlet {
             request.setAttribute("error", "All field is required");
             showListCustomer(request, response);
         } else {
-            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(name) ) {
+            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(name) || !CheckTools.isPhoneNumber(phone) ) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
                 showListCustomer(request, response);
@@ -165,7 +165,7 @@ public class CustomerServlet extends HttpServlet {
             request.setAttribute("error", "All field is required");
             showEditForm(request, response);
         } else {
-            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(phone)) {
+            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(name) || !CheckTools.isPhoneNumber(phone)) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
                 showEditForm(request, response);

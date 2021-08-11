@@ -24,8 +24,8 @@ public class CheckTools {
     }
 
 
-    public static boolean isNumber(String number){
-        String NUMBER_REGEX = "[0-9]+";
+    public static boolean isPhoneNumber(String number){
+        String NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";
         Pattern pattern = Pattern.compile(NUMBER_REGEX);
         Matcher matcher = pattern.matcher(number);
         return matcher.matches();

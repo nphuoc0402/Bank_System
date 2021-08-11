@@ -22,25 +22,30 @@ public class CustomerDAO implements ICustomerDAO {
     private final String UPDATE_CUSTOMER_SALARY_RECEIVER = "UPDATE customer SET salary = salary + ? WHERE id = ?;";
 
     @Override
-    public void insertCustomer(Customer customer) {
+    public void insertCustomer(Customer customer) throws SQLException{
         String SQL_INSERT_CUSTOMER = "INSERT INTO customers (name,phone,email) VALUES (?,?,?);";
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_CUSTOMER);
             preparedStatement.setString(1, customer.getName());
             preparedStatement.setString(2, customer.getPhone());
             preparedStatement.setString(3, customer.getEmail());
             preparedStatement.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
+            connection.rollback();
             printSQLException(e);
         }
     }
 
     @Override
-    public Customer selectCustomerById(int id) {
+    public Customer selectCustomerById(int id) throws SQLException{
         Customer customer = null;
         String SQL_SELECT_CUSTOMER_BY_ID = "SELECT name,phone,email,salary FROM customers WHERE id = ?;";
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_CUSTOMER_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
@@ -51,7 +56,11 @@ public class CustomerDAO implements ICustomerDAO {
                 int salary = rs.getInt("salary");
                 customer = new Customer(id,name, phone, email, salary);
             }
+            connection.commit();
+            connection.setAutoCommit(true);
+
         } catch (SQLException e) {
+            connection.rollback();
             printSQLException(e);
         }
         return customer;
@@ -60,7 +69,7 @@ public class CustomerDAO implements ICustomerDAO {
     @Override
     public List<Customer> selectAllCustomer() {
         List<Customer> customerList = new ArrayList<>();
-        String SQL_SELECTALL_CUSTOMER = "SELECT id,name,phone,email,salary FROM customers;";
+        String SQL_SELECTALL_CUSTOMER = "SELECT id,name,phone,email,salary FROM customers ORDER BY id DESC;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECTALL_CUSTOMER);
             ResultSet rs = preparedStatement.executeQuery();
@@ -72,6 +81,7 @@ public class CustomerDAO implements ICustomerDAO {
                 int salary = rs.getInt("salary");
                 customerList.add(new Customer(id, name, phone, email, salary));
             }
+
         } catch (SQLException e) {
             printSQLException(e);
         }
@@ -83,7 +93,8 @@ public class CustomerDAO implements ICustomerDAO {
         String SELECT_SEARCH_CUSTOMER  = "SELECT id,name,phone,email,salary FROM customers  WHERE name LIKE ?";
 
         List<Customer> customers = new ArrayList<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SEARCH_CUSTOMER);){
+        try(
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SEARCH_CUSTOMER);){
             preparedStatement.setString(1, "%" +  nameSearch + "%");
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
@@ -126,7 +137,7 @@ public class CustomerDAO implements ICustomerDAO {
         return update;
     }
     @Override
-    public boolean isUpdateTransfer(Customer customer, Customer customer2, int balance, int feeTransaction) throws SQLException {
+    public boolean  isUpdateTransfer(Customer customer, Customer customer2, int balance, int feeTransaction) throws SQLException {
 
         boolean rowUpdate = false;
         try  {
@@ -157,12 +168,16 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public boolean WithdrawBalance(Customer customer) throws SQLException {
-        boolean Update;
+        boolean Update = false;
         String UPDATE_CUSTOMER_SALARY_WITHDRAW = "UPDATE customers SET salary = salary - ? WHERE id = ?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CUSTOMER_SALARY_WITHDRAW);) {
+        try (
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CUSTOMER_SALARY_WITHDRAW);) {
             preparedStatement.setInt(1, customer.getSalary());
             preparedStatement.setInt(2, customer.getId());
             Update = preparedStatement.executeUpdate() > 0;
+            Update = true;
+        }catch (SQLException e){
+            printSQLException(e);
         }
         return  Update;
     }
@@ -190,7 +205,6 @@ public class CustomerDAO implements ICustomerDAO {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
             connection.commit();
-            ;
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             connection.rollback();

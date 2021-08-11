@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ICustomerDAO {
-    public void insertCustomer(Customer customer);
-    public Customer selectCustomerById(int id);
+    public void insertCustomer(Customer customer) throws SQLException;
+    public Customer selectCustomerById(int id) throws SQLException;
     public List<Customer> selectAllCustomer();
     public List<Customer> selectSearchCustomer(String name);
     public boolean isUpdateCustomer(Customer customer) throws SQLException;

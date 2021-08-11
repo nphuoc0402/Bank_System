@@ -164,9 +164,9 @@ public class ManageCustomerServlet extends HttpServlet {
                     dis = request.getRequestDispatcher("Customer/error-404.jsp");
                 } else {
                     int salary = Integer.parseInt(balance);
-                    if(salary <=0 || salary >99999){
+                    if(salary <=0 || salary >99999 || salary < editCustomer.getSalary()){
                         request.setAttribute("success", null);
-                        request.setAttribute("error", "Salary require greater than 0 and less than 100000");
+                        request.setAttribute("error", "Salary require greater than 0 and less than 100000 or Salary isn't enough to withdraw");
                         showDepositForm(request, response);
                     }else {
                         editCustomer.setId(id);

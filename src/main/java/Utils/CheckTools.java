@@ -13,7 +13,6 @@ public class CheckTools {
         } catch (NumberFormatException nfe) {
             return false;
         }
-
         return true;
     }
 

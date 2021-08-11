@@ -108,7 +108,7 @@ public class CustomerServlet extends HttpServlet {
         dis.forward(request, response);
     }
 
-    public void showTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void showTransfer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         int id = Integer.parseInt(request.getParameter("id"));
         Customer existingCustomer = customerDAO.selectCustomerById(id);
         Transfer transfer = new Transfer();
@@ -138,9 +138,9 @@ public class CustomerServlet extends HttpServlet {
             request.setAttribute("error", "All field is required");
             showListCustomer(request, response);
         } else {
-            if (!CheckTools.isEmail(email)) {
+            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(name) ) {
                 request.setAttribute("success", null);
-                request.setAttribute("error", "Invalid transfer information");
+                request.setAttribute("error", "Invalid Value");
                 showListCustomer(request, response);
             } else {
                 Customer newCustomer = new Customer(name, phone, email);
@@ -165,7 +165,7 @@ public class CustomerServlet extends HttpServlet {
             request.setAttribute("error", "All field is required");
             showListCustomer(request, response);
         } else {
-            if (!CheckTools.isEmail(email)) {
+            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(phone)) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
                 showListCustomer(request, response);
@@ -188,40 +188,49 @@ public class CustomerServlet extends HttpServlet {
     }
 
     public void transferE(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        int idS = Integer.parseInt(request.getParameter("idS"));
+        String  str_idS = request.getParameter("idS");
         String idStringR = request.getParameter("idR");
         String amountString = request.getParameter("amount");
-        int fee_percent = Integer.parseInt(request.getParameter("feepercent"));
-        Customer customerS = customerDAO.selectCustomerById(idS);
+        String str_fee_percent = request.getParameter("feepercent");
         RequestDispatcher dis;
-        if (!CheckTools.isNumeric(idStringR) || !CheckTools.isNumeric(amountString)) {
-            request.setAttribute("error", "Transfer isn't successful");
+        if (idStringR == "" || amountString == "" || str_idS == "" || str_fee_percent == "" ) {
             request.setAttribute("success", null);
+            request.setAttribute("error", "All field is required");
             showTransfer(request, response);
-        } else {
-            int idR = Integer.parseInt(idStringR);
-            int amount = Integer.parseInt(amountString);
-            Customer customerR = customerDAO.selectCustomerById(idR);
-            if (amount > customerS.getSalary() || amount <= 0 || customerR == null) {
+        }else{
+            if (!CheckTools.isNumeric(idStringR) || !CheckTools.isNumeric(amountString) || !CheckTools.isNumeric(str_idS)) {
                 request.setAttribute("error", "Transfer isn't successful");
                 request.setAttribute("success", null);
                 showTransfer(request, response);
             } else {
-                if (!customerDAO.isUpdateTransfer(customerS, customerR, amount, (fee_percent * amount) / 100)) {
+                int ids = Integer.parseInt(str_idS);
+                int idR = Integer.parseInt(idStringR);
+                int amount = Integer.parseInt(amountString);
+                int fee_percent = Integer.parseInt(str_fee_percent);
+                Customer customerS = customerDAO.selectCustomerById(ids);
+                Customer customerR = customerDAO.selectCustomerById(idR);
+                int total_fee = (amount*fee_percent)/100;
+                if (amount >= (customerS.getSalary()+total_fee) || amount <= 0 || customerR == null) {
                     request.setAttribute("error", "Transfer isn't successful");
                     request.setAttribute("success", null);
                     showTransfer(request, response);
                 } else {
-                    request.setAttribute("success", "TranSfer Successful");
-                    request.setAttribute("error", null);
-                    Transfer transfer = new Transfer(idS, idR, amount, fee_percent, (fee_percent * amount) / 100);
-//                dis = request.getRequestDispatcher("transfer.jsp");
-//                dis.forward(request,response);
-                    transferDAO.insertTransfer(transfer);
-                    showTransfer(request, response);
+                    if (!customerDAO.isUpdateTransfer(customerS, customerR, amount, (fee_percent * amount) / 100)) {
+                        request.setAttribute("error", "Transfer isn't successful");
+                        request.setAttribute("success", null);
+                        showTransfer(request, response);
+                    } else {
+
+                        Transfer transfer = new Transfer(ids, idR, amount, fee_percent, (fee_percent * amount) / 100);
+                        transferDAO.insertTransfer(transfer);
+                        request.setAttribute("success", "TranSfer Successful");
+                        request.setAttribute("error", null);
+                        showTransfer(request, response);
+                    }
                 }
             }
         }
+
     }
 
     public void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{

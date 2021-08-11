@@ -5,16 +5,23 @@
 <html>
 <head>
     <title>Title</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
+    <style>
+        label.error{
+            color: red;
+        }
+    </style>
     <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
     <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/resource/js/jquery.validate.min.js"></script>
 </head>
     <title>Title</title>
 </head>
@@ -53,11 +60,28 @@
     </form>
 </div>
 
-<p>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
+<div class="message">
+    <c:if test='${requestScope["success"] != null}'>
+        <div class="alert alert-success" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                ${requestScope["success"]}
+        </div>
+
     </c:if>
-</p>
+    <c:if test='${requestScope["error"] != null}'>
+        <div class="alert alert-danger" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                ${requestScope["error"]}
+        </div>
+    </c:if>
+</div>
 <%@include file="validate.jsp"%>
+<script>
+    $('.alert-success').delay(4 * 1000).slideUp(500, function () {
+        $('this').alert('close');
+    });
+
+    $('.alert-danger').delay(4 * 1000).slideUp(500, function () {
+        $('this').alert('close');
+    });
+</script>
 </body>
 </html>

@@ -80,9 +80,6 @@
             <div class="col-md-3 mb-3">
                 <label>Amount</label>
                 <input onchange="myFunction()" type="text" name="amount" id="amount" size="15" class="form-control" required/>
-                <div class="invalid-feedback">
-                    Amount is required
-                </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label >Fee Percent</label>
@@ -100,18 +97,20 @@
         <button class="btn btn-primary" type="submit">Transfer Transaction</button>
     </form>
     <div class="message">
-    <c:if test='${requestScope["success"] != null}'>
-        <div class="alert alert-success" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
-                ${requestScope["success"]}
-        </div>
-
-    </c:if>
-    <c:if test='${requestScope["error"] != null}'>
-        <div class="alert alert-danger" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
-                ${requestScope["error"]}
-        </div>
-    </c:if>
-</div>
+        <c:if test='${requestScope["success"] != null}'>
+            <div class="alert alert-success" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                    ${requestScope["success"]}
+            </div>
+        </c:if>
+        <c:if test='${requestScope["error"] != null}'>
+            <div class="alert alert-danger" role="alert" style="position: fixed; bottom: 0; right: 0; left: 0">
+                <strong> ${requestScope["error"]}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </c:if>
+    </div>
 </div>
 <script>
     function myFunction() {
@@ -119,13 +118,11 @@
         var y = document.getElementById("feepercent").value;
         document.getElementById("Input").value = (x * y)/100;
     }
-    $('.alert-success').delay(4 * 1000).slideUp(500, function () {
-        $('this').alert('close');
-    });
-
-    $('.alert-danger').delay(4 * 1000).slideUp(500, function () {
-        $('this').alert('close');
-    });
+    $(".alert-success").fadeOut(4000);
+    $(".alert-danger").fadeIn();
+    $(".close").click(function(){
+        $(".alert-danger").fadeOut();
+    })
 </script>
 <script>
     $(function() {
@@ -155,7 +152,7 @@
                     number: "ID Receiver is required"
                 },
                 amount: {
-                    required: "Please provide a email",
+                    required: "Please provide a amount",
                     number: "amount is required"
 
                 },

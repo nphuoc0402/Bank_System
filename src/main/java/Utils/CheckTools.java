@@ -17,7 +17,7 @@ public class CheckTools {
     }
 
     public static boolean isEmail(String email){
-        String EMAIL_REGEX = "^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$";
+        String EMAIL_REGEX = "/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/";
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
@@ -25,7 +25,7 @@ public class CheckTools {
 
 
     public static boolean isPhoneNumber(String number){
-        String NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";
+        String NUMBER_REGEX = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
         Pattern pattern = Pattern.compile(NUMBER_REGEX);
         Matcher matcher = pattern.matcher(number);
         return matcher.matches();

@@ -69,7 +69,7 @@ public class CustomerDAO implements ICustomerDAO {
     @Override
     public List<Customer> selectAllCustomer() {
         List<Customer> customerList = new ArrayList<>();
-        String SQL_SELECTALL_CUSTOMER = "SELECT id,name,phone,email,salary FROM customers ORDER BY id DESC;";
+        String SQL_SELECTALL_CUSTOMER = "SELECT id,name,phone,email,salary FROM customers;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECTALL_CUSTOMER);
             ResultSet rs = preparedStatement.executeQuery();

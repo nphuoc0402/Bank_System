@@ -1,12 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: DELL
-  Date: 8/11/2021
-  Time: 6:14 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -29,7 +22,9 @@
     <table class="table table-striped">
         <thead class="thead-dark">
         <th scope="col">ID</th>
+        <th scope="col">ID Sender</th>
         <th scope="col">Name Sender</th>
+        <th scope="col">ID Receiver</th>
         <th scope="col">Name Receiver</th>
         <th scope="col">Amount</th>
         <th scope="col">Fee_percent</th>
@@ -40,15 +35,17 @@
         <c:forEach var="transfer" items="${transfers}">
             <tr>
                 <td><c:out value="${transfer.getId()}"/></td>
-                <td><c:out value="${customers.get(transfer.getIdSender()-1).getName()}"/></td>
-                <td><c:out value="${customers.get(transfer.getIdReceiver()-1).getName()}"/></td>
+                <td><c:out value="${transfer.getIdSender()}"></c:out></td>
+                <td><c:out value="${customers.get(transfer.getIdSender()-1).getName()}"></c:out></td>
+                <td><c:out value="${transfer.getIdReceiver()}"></c:out></td>
+                <td><c:out value="${customers.get(transfer.getIdReceiver()-1).getName()}"></c:out></td>
                 <td><c:out value="${transfer.getAmount()}"/></td>
                 <td><c:out value="${transfer.getTransaction_fee()}"/></td>
                 <td><c:out value="${transfer.getTotal_amount()}"/></td>
             </tr>
         </c:forEach>
     </table>
-    <p  style="float: right;font-weight: bold; margin-right: 170px ">Total:<c:out value="${total}"/></p>
+    <p  style="float: right;font-weight: bold; margin-right: 150px ">Total:<c:out value="${total}"/></p>
 </div>
 </body>
 </html>

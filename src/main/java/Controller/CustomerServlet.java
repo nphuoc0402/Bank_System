@@ -210,7 +210,7 @@ public class CustomerServlet extends HttpServlet {
                 Customer customerS = customerDAO.selectCustomerById(ids);
                 Customer customerR = customerDAO.selectCustomerById(idR);
                 int total_fee = (amount*fee_percent)/100;
-                if (amount >= (customerS.getSalary()+total_fee) || amount <= 0 || customerR == null || ids == idR) {
+                if (amount >= (customerS.getSalary()+total_fee) || amount <= 0 || customerR == null || ids == idR || fee_percent != 5) {
                     request.setAttribute("error", "Transfer isn't successful");
                     request.setAttribute("success", null);
                     showTransfer(request, response);

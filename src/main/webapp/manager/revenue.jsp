@@ -27,7 +27,7 @@
         <th scope="col">ID Receiver</th>
         <th scope="col">Name Receiver</th>
         <th scope="col">Amount</th>
-        <th scope="col">Fee_percent</th>
+        <th scope="col">Fee_percent(%)</th>
         <th scope="col">Fee_Transaction</th>
         </thead>
         </thead>
@@ -36,9 +36,9 @@
             <tr>
                 <td><c:out value="${transfer.getId()}"/></td>
                 <td><c:out value="${transfer.getIdSender()}"></c:out></td>
-                <td><c:out value="${customers.get(transfer.getIdSender()-1).getName()}"></c:out></td>
+                <td><c:out value="${transfer.getName_Sender()}"></c:out></td>
                 <td><c:out value="${transfer.getIdReceiver()}"></c:out></td>
-                <td><c:out value="${customers.get(transfer.getIdReceiver()-1).getName()}"></c:out></td>
+                <td><c:out value="${transfer.getName_Receiver()}"></c:out></td>
                 <td><c:out value="${transfer.getAmount()}"/></td>
                 <td><c:out value="${transfer.getTransaction_fee()}"/></td>
                 <td><c:out value="${transfer.getTotal_amount()}"/></td>

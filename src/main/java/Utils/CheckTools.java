@@ -17,7 +17,7 @@ public class CheckTools {
     }
 
     public static boolean isEmail(String email){
-        String EMAIL_REGEX = "/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/";
+        String EMAIL_REGEX = "/\\S+@\\S+\\.\\S+/";
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

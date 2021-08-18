@@ -9,7 +9,8 @@
                     required : true
                 },
                 phone: {
-                    required: true
+                    required: true,
+                    minlength:true
                 },
                 email: {
                     required: true,

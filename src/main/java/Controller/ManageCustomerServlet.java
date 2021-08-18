@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Customer;
+import Model.ListRevenue;
 import Model.Transfer;
 import Service.CustomerDAO;
 import Service.TransferDAO;
@@ -77,12 +78,10 @@ public class ManageCustomerServlet extends HttpServlet {
     }
 
     public void listRevenue(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        List<Transfer> transferList = transferDAO.selectAllTransfer();
-        List<Customer> customers = customerDAO.selectAllCustomer();
+        List<ListRevenue> transferList = transferDAO.selectAllTransfer();
         int total = transferDAO.selectTotal();
         request.setAttribute("total",total);
         request.setAttribute("transfers",transferList);
-        request.setAttribute("customers",customers);
         RequestDispatcher dis = request.getRequestDispatcher("manager/revenue.jsp");
         dis.forward(request,response);
     }

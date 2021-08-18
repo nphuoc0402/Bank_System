@@ -67,7 +67,7 @@ public class CustomerServlet extends HttpServlet {
                     break;
                 case "delete":
 //                    showDeleteForm(request, response);
-                    deleteCustomer(request,response);
+//                    deleteCustomer(request,response);
                     break;
                 case "transfer":
                     showTransfer(request, response);
@@ -138,7 +138,7 @@ public class CustomerServlet extends HttpServlet {
             request.setAttribute("error", "All field is required");
             showListCustomer(request, response);
         } else {
-            if (!CheckTools.isEmail(email) || CheckTools.isNumeric(name) || !CheckTools.isPhoneNumber(phone) ) {
+            if (CheckTools.isEmail(email) || CheckTools.isNumeric(name) || !CheckTools.isPhoneNumber(phone)) {
                 request.setAttribute("success", null);
                 request.setAttribute("error", "Invalid Value");
                 showListCustomer(request, response);
@@ -233,36 +233,36 @@ public class CustomerServlet extends HttpServlet {
 
     }
 
-    public void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
-        int id = Integer.parseInt(request.getParameter("id"));
-        List<Transfer> transferList = transferDAO.selectAllTransfer();
-        Customer customer = customerDAO.selectCustomerById(id);
-        RequestDispatcher dis;
-        if(customer == null){
-            dis = request.getRequestDispatcher("error-404.jsp");
-        }else{
-            boolean check = true;
-            for(Transfer transfer : transferList){
-                if(transfer.getIdReceiver() == id || transfer.getIdSender() == id){
-                    check = false;
-                    break;
-                }
-            }
-            if(check){
-                customerDAO.isDeleteCustomer(id);
-                List<Customer> customerList = customerDAO.selectAllCustomer();
-                request.setAttribute("customers",customerList);
-                response.sendRedirect("banking_system");
-                request.setAttribute("error",null);
-                request.setAttribute("success","Customer was deleted");
-            }else{
-                response.sendRedirect("banking_system");
-                request.setAttribute("error","Traded Customer cannot be deleted");
-                request.setAttribute("success",null);
-
-            }
-
-        }
-    }
+//    public void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+//        int id = Integer.parseInt(request.getParameter("id"));
+////        List<Transfer> transferList = transferDAO.selectAllTransfer();
+//        Customer customer = customerDAO.selectCustomerById(id);
+//        RequestDispatcher dis;
+//        if(customer == null){
+//            dis = request.getRequestDispatcher("error-404.jsp");
+//        }else{
+//            boolean check = true;
+//            for(Transfer transfer : transferList){
+//                if(transfer.getIdReceiver() == id || transfer.getIdSender() == id){
+//                    check = false;
+//                    break;
+//                }
+//            }
+//            if(check){
+//                customerDAO.isDeleteCustomer(id);
+//                List<Customer> customerList = customerDAO.selectAllCustomer();
+//                request.setAttribute("customers",customerList);
+//                response.sendRedirect("banking_system");
+//                request.setAttribute("error",null);
+//                request.setAttribute("success","Customer was deleted");
+//            }else{
+//                response.sendRedirect("banking_system");
+//                request.setAttribute("error","Traded Customer cannot be deleted");
+//                request.setAttribute("success",null);
+//
+//            }
+//
+//        }
+//    }
 
 }
